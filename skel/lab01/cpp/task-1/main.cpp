@@ -7,7 +7,7 @@ public:
         read_input();
         print_output(get_result());
     }
- 
+
 private:
     int n, x;
     vector<int> v;
