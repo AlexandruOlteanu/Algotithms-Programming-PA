@@ -31,10 +31,30 @@ private:
         fin.close();
     }
 
-    double get_result() {
-        // TODO: Aflati profitul maxim care se poate obtine cu obiectele date.
+    static bool comparator(Object a, Object b) {
+        int x = a.price * b.weight;
+        int y = b.price * a.weight;
+        if (x > y) {
+            return 1;
+        }
+        return 0;
+    }
 
-        return 0.0;
+    double get_result() {
+        sort(objs.begin(), objs.end(), comparator);
+
+        double ans = 0;
+        for (auto u : objs) {
+            if (u.weight <= w) {
+                ans +=u.price;
+                w -= u.weight;
+                continue;
+            }
+            ans += (double) w * u.price / u.weight;
+            break;
+        }
+
+        return ans;
     }
 
     void print_output(double result) {

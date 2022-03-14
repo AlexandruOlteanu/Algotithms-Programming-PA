@@ -31,11 +31,36 @@ private:
         fin.close();
     }
 
-    int get_result() {
-        // TODO: Aflati punctajul maxim pe care il puteti obtine planificand
-        // optim temele.
-
+    static bool comparator(Homework a, Homework b) {
+        if (a.score > b.score) {
+            return 1;
+        }
+        if (a.score < b.score) {
+            return 0;
+        }
+        if (a.deadline > b.deadline) {
+            return 1;
+        }
         return 0;
+    }
+
+    int get_result() {
+        
+        map<int, bool> taken;
+        sort(hws.begin(), hws.end(), comparator);
+        int week = 1;
+        int points = 0;
+        for (auto u : hws) {
+            for (int j = u.deadline; j >= 1; --j) {
+                if (!taken[j]) {
+                    taken[j] = 1;
+                    points += u.score;
+                    break;
+                }
+            }
+        }
+
+        return points;
     }
 
     void print_output(int result) {

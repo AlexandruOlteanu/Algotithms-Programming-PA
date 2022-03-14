@@ -23,10 +23,24 @@ private:
     }
 
     int get_result() {
-        // TODO: Aflati numarul minim de opriri necesare pentru a ajunge
-        // la destinatie.
+        
+        int gas = m;
+        int stops = 0;
+        for (int i = 0; i < n - 1; ++i) {
+            if (i == 0) {
+                gas -= dist[0];
+            }
+            else {
+                gas -= dist[i] - dist[i - 1];
+            }
+            if (dist[i + 1] - dist[i] <= gas) {
+                continue;
+            }
+            ++stops;
+            gas = m;
+        }
 
-        return 0;
+        return stops;
     }
 
     void print_output(int result) {
