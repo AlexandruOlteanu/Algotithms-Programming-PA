@@ -41,13 +41,33 @@ private:
         Result result;
         result.len = 0;
 
-        // TODO: Aflati cel mai lung subsir comun intre v (de lungime n)
-        // si w (de lungime m).
-        // Se puncteaza separat urmatoarele 2 cerinte:
-        // 2.1. Lungimea CMLSC. Rezultatul pentru cerinta aceasta se va pune in
-        // ``result.len``.
-        // 2.2. Reconstructia CMLSC. Se puncteaza orice subsir comun maximal valid.
-        // Solutia pentru aceasta cerinta se va pune in ``result.subsequence``.
+        vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
+
+        for (int i = 1; i <= n; ++i) {
+            for (int j = 1; j <= m; ++j) {
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+                if (v[i] == w[j]) {
+                    dp[i][j] = max(dp[i][j], dp[i - 1][j - 1] + 1);
+                }
+            }
+        }
+        result.len = dp[n][m];
+
+        int i = n, j = m;
+        while (i != 0 && j != 0) {
+            if (v[i] == w[j]) {
+                result.subsequence.push_back(v[i]);
+                --i, --j;
+                continue;
+            }
+            if (dp[i - 1][j] > dp[i][j - 1]) {
+                --i;
+            }
+            else {
+                --j;
+            }
+        }
+        reverse(result.subsequence.begin(), result.subsequence.end());
 
         return result;
     }
